@@ -6,7 +6,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.novikov.museum.models.Booking;
 import ru.novikov.museum.models.Event;
 import ru.novikov.museum.repositories.BookingRepository;
