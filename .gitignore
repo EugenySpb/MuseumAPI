@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /src/main/resources/sql
+src/main/java/ru/novikov/museum/util/PasswordHasher.java
 
 # Ignoring .env
 .env
@@ -45,3 +46,8 @@ build/
 /dataSources/
 /dataSources.local.xml
 /.mvn/wrapper/maven-wrapper.properties
+/other.txt
+/nginx/nginx.conf
+/Dockerfile
+/docker-compose.yaml
+/.dockerignore

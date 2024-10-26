@@ -14,6 +14,7 @@ import ru.novikov.museum.dto.AdminCreateDTO;
 import ru.novikov.museum.models.Admin;
 import ru.novikov.museum.services.AdminService;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -29,7 +30,7 @@ class AdminControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void getByAdminId() throws Exception{
+    void getByAdminId() throws Exception {
         Admin admin = new Admin(1L, "testUser", "password", "ROLE_ADMIN");
 
         Mockito.when(adminService.getAdminById(1L)).thenReturn(admin);
@@ -42,10 +43,11 @@ class AdminControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void createAdmin() throws Exception{
+    void createAdmin() throws Exception {
         AdminCreateDTO adminCreateDTO = new AdminCreateDTO("newUser", "password", "ROLE_ADMIN");
 
         mockMvc.perform(post("/api/admin/create")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(adminCreateDTO)))
                 .andExpect(status().isOk())
@@ -54,10 +56,11 @@ class AdminControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void updateAdmin() throws Exception{
+    void updateAdmin() throws Exception {
         AdminCreateDTO adminCreateDTO = new AdminCreateDTO("updatedUser", "newPassword", "ROLE_ADMIN");
 
         mockMvc.perform(put("/api/admin/1")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(adminCreateDTO)))
                 .andExpect(status().isOk())
@@ -67,7 +70,8 @@ class AdminControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void deleteAdmin() throws Exception {
-        mockMvc.perform(delete("/api/admin/1"))
+        mockMvc.perform(delete("/api/admin/1")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Администратор успешно удален"));
     }
