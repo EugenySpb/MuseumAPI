@@ -51,3 +51,5 @@ build/
 /Dockerfile
 /docker-compose.yaml
 /.dockerignore
+/mvnw.cmd
+/mvnw
