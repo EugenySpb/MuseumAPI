@@ -18,6 +18,7 @@ import ru.novikov.museum.services.BookingService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -73,6 +74,7 @@ class BookingControllerTest {
         BookingDTO bookingDTO = new BookingDTO("lastName", "firstName", "middleName", "email@example.com", "1234567890");
 
         mockMvc.perform(post("/api/bookings/1")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(bookingDTO)))
                 .andExpect(status().isOk())
@@ -81,7 +83,8 @@ class BookingControllerTest {
 
     @Test
     void cancelBooking() throws Exception {
-        mockMvc.perform(delete("/api/bookings/1/cancel"))
+        mockMvc.perform(delete("/api/bookings/1/cancel")
+                .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Бронирование отменено"));
     }

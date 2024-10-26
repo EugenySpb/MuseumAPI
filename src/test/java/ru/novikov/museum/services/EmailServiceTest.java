@@ -6,12 +6,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import ru.novikov.museum.models.Booking;
 import ru.novikov.museum.models.Event;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -24,6 +26,8 @@ class EmailServiceTest {
 
     @InjectMocks
     private EmailService emailService;
+    @Value("${server.api.base-url}")
+    private String baseUrl;
 
     @BeforeEach
     public void setUp() {
@@ -51,8 +55,8 @@ class EmailServiceTest {
         verify(mailSender, times(1)).send(messageCaptor.capture());
 
         SimpleMailMessage sentMessage = messageCaptor.getValue();
-        assertEquals("magadanzenit@gmail.com", sentMessage.getTo()[0]);
-        assertEquals("nov.magadan@yandex.ru", sentMessage.getFrom());
+        assertEquals("magadanzenit@gmail.com", Objects.requireNonNull(sentMessage.getTo())[0]);
+        assertEquals("sendforapi@yandex.ru", sentMessage.getFrom());
         assertEquals("Подтверждение вашего бронирования", sentMessage.getSubject());
         assertEquals("Здравствуйте Иванов,\n\n" +
                 "Вы записались на музейное мероприятие. Подтверждаем, что ваша регистрация прошла успешно. Информация о мероприятии: \n" +
@@ -61,7 +65,7 @@ class EmailServiceTest {
                 "Место проведения: Адрес музея\n\n" +
                 "Билеты оплачиваются в кассе музея перед началом мероприятия. \n" +
                 "Если вы хотите отменить бронирование, пожалуйста, перейдите по следующей ссылке: " +
-                "http://localhost:8080/api/bookings/" + booking.getId() + "/cancel\n\n" +
+                baseUrl + "/api/bookings/" + booking.getId() + "/cancel\n\n" +
                 "С уважением,\n" +
                 "Команда музея", sentMessage.getText());
     }

@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,7 +45,7 @@ class EventControllerTest {
     }
 
     private EventDTO createEventDTO() {
-        return new EventDTO("Title", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Museum", "Address", 10, 10);
+        return new EventDTO(1L,"Title", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Museum", "Address", 10, 10);
     }
 
     @Test
@@ -87,6 +88,7 @@ class EventControllerTest {
         EventDTO eventDTO = createEventDTO();
 
         mockMvc.perform(post("/api/events")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDTO)))
                 .andExpect(status().isOk())
@@ -99,6 +101,7 @@ class EventControllerTest {
         EventDTO eventDTO = createEventDTO();
 
         mockMvc.perform(put("/api/events/1")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDTO)))
                 .andExpect(status().isOk())
@@ -108,7 +111,8 @@ class EventControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void deleteEvent() throws Exception {
-        mockMvc.perform(delete("/api/events/1"))
+        mockMvc.perform(delete("/api/events/1")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Мероприятие удалено"));
     }
