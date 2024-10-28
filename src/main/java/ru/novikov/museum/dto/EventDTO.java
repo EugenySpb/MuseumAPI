@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDTO {
-    private Long id;
 
     @NotEmpty(message = "Поле название мероприятия не должно быть пустым")
     private String titleEvent;

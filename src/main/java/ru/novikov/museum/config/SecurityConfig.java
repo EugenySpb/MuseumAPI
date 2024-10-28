@@ -26,8 +26,6 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import ru.novikov.museum.configjwt.*;
 import ru.novikov.museum.services.AdminService;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity
@@ -84,11 +82,11 @@ public class SecurityConfig {
                         }))
                 .headers(headers -> headers
                         .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';")
+                                .policyDirectives("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; connect-src 'self' https://museumapi.ru;")
                         )
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
-                .cors(withDefaults());
+                .cors(Customizer.withDefaults());
 
         tokenCookieAuthenticationConfigurer.init(http);
         tokenCookieAuthenticationConfigurer.configure(http);

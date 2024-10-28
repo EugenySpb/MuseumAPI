@@ -28,6 +28,8 @@ class EmailServiceTest {
     private EmailService emailService;
     @Value("${server.api.base-url}")
     private String baseUrl;
+    @Value("${spring.mail.username}")
+    private String fromEmail;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +40,7 @@ class EmailServiceTest {
     @Test
     public void testSendConfirmationEmail() {
         Booking booking = new Booking();
-        booking.setEmail("magadanzenit@gmail.com");
+        booking.setEmail("test@gmail.com");
         booking.setFirstName("Иван");
         booking.setLastName("Иванов");
 
@@ -55,8 +57,8 @@ class EmailServiceTest {
         verify(mailSender, times(1)).send(messageCaptor.capture());
 
         SimpleMailMessage sentMessage = messageCaptor.getValue();
-        assertEquals("magadanzenit@gmail.com", Objects.requireNonNull(sentMessage.getTo())[0]);
-        assertEquals("sendforapi@yandex.ru", sentMessage.getFrom());
+        assertEquals("test@gmail.com", Objects.requireNonNull(sentMessage.getTo())[0]);
+        assertEquals(fromEmail, sentMessage.getFrom());
         assertEquals("Подтверждение вашего бронирования", sentMessage.getSubject());
         assertEquals("Здравствуйте Иванов,\n\n" +
                 "Вы записались на музейное мероприятие. Подтверждаем, что ваша регистрация прошла успешно. Информация о мероприятии: \n" +

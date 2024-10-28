@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.novikov.museum.dto.EventDTO;
+import ru.novikov.museum.dto.EventGetAllEventsDTO;
 import ru.novikov.museum.models.Event;
 import ru.novikov.museum.services.EventService;
 import ru.novikov.museum.util.EventErrorResponse;
@@ -36,8 +37,8 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventDTO> getAllEvents() {
-        return eventService.getAllEvents().stream().map(this::convertToEventDTO)
+    public List<EventGetAllEventsDTO> getAllEvents() {
+        return eventService.getAllEvents().stream().map(this::convertToEventGetAllEventsDTO)
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +48,7 @@ public class EventController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<String> createEvent(@RequestBody @Valid EventDTO eventDTO,
                                               BindingResult bindingResult) {
         Event eventToCreate = convertToEvent(eventDTO);
@@ -100,5 +101,9 @@ public class EventController {
 
     private EventDTO convertToEventDTO(Event event) {
         return modelMapper.map(event, EventDTO.class);
+    }
+
+    private EventGetAllEventsDTO convertToEventGetAllEventsDTO(Event event) {
+        return modelMapper.map(event, EventGetAllEventsDTO.class);
     }
 }

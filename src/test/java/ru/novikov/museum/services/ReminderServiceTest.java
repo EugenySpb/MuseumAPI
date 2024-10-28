@@ -44,7 +44,7 @@ public class ReminderServiceTest {
         LocalDateTime reminderTime = now.plusDays(1);
 
         Booking booking = new Booking();
-        booking.setEmail("magadanzenit@gmail.com");
+        booking.setEmail("test@gmail.com");
         booking.setFirstName("Иван");
         booking.setLastName("Иванов");
 

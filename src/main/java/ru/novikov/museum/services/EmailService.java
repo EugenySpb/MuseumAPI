@@ -18,6 +18,9 @@ public class EmailService {
     @Value("${server.api.base-url}")
     private String baseUrl;
 
+    @Value("${server.api.from-email}")
+    private String fromEmail;
+
     @Autowired
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -27,7 +30,7 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(booking.getEmail());
-            message.setFrom("sendforapi@yandex.ru");
+            message.setFrom(fromEmail);
             message.setSubject("Подтверждение вашего бронирования");
             message.setText("Здравствуйте " + booking.getLastName() + ",\n\n" +
                     "Вы записались на музейное мероприятие. Подтверждаем, что ваша регистрация прошла успешно. Информация о мероприятии: \n" +
@@ -52,7 +55,7 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(booking.getEmail());
-            message.setFrom("sendforapi@yandex.ru");
+            message.setFrom(fromEmail);
             message.setSubject("Напоминание о предстоящем мероприятии");
             message.setText("Здравствуйте " + booking.getLastName() + ",\n\n" +
                     "Напоминаем вам, что вы записаны на музейное мероприятие: \n" +
@@ -77,7 +80,7 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(booking.getEmail());
-            message.setFrom("sendforapi@yandex.ru");
+            message.setFrom(fromEmail);
             message.setSubject("Отмена бронирования");
             message.setText("Здравствуйте " + booking.getLastName() + ",\n\n" +
                     "Ваше бронирование на мероприятие \"" + booking.getEvent().getTitleEvent() + "\" было отменено.\n\n" +

@@ -45,7 +45,7 @@ class EventControllerTest {
     }
 
     private EventDTO createEventDTO() {
-        return new EventDTO(1L,"Title", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Museum", "Address", 10, 10);
+        return new EventDTO("Title", LocalDateTime.now(), LocalDateTime.now().plusHours(2), "Museum", "Address", 10, 10);
     }
 
     @Test
